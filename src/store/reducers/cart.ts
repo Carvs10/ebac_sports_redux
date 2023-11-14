@@ -3,10 +3,12 @@ import { Produto } from '../../App'
 
 type CartState = {
   items: Produto[]
+  favorites: Produto[]
 }
 
 const initialState: CartState = {
-  items: []
+  items: [],
+  favorites: []
 }
 
 const cartSlice = createSlice({
@@ -20,17 +22,17 @@ const cartSlice = createSlice({
       } else {
         state.items.push(product)
       }
+    },
+    favorite: (state, action: PayloadAction<Produto>) => {
+      const favorite = action.payload
+      if (state.favorites.find((p) => p.id === favorite.id)) {
+        state.favorites = state.favorites.filter((p) => p.id !== favorite.id)
+      } else {
+        state.favorites.push(favorite)
+      }
     }
   }
 })
 
-export const { add } = cartSlice.actions
+export const { add, favorite } = cartSlice.actions
 export default cartSlice.reducer
-
-// function adicionarAoCarrinho(produto: Produto) {
-//   if (carrinho.find((p) => p.id === produto.id)) {
-//     alert('Item já adicionado')
-//   } else {
-//     setCarrinho([...carrinho, produto])
-//   }
-// }
